@@ -1,6 +1,6 @@
 import { API_URL } from '../config'
 import { pca } from '../msalConfig'
-import { UserRole } from './apiTypes'
+import { User, UserRole } from './apiTypes'
 
 const request = {
     scopes: ['cc0af56e-ee49-46ce-aad6-010dce5bcbb6/User.Read'],
@@ -106,12 +106,32 @@ const apiService = () => {
         return data
     }
 
-    const addUser = async (): Promise<Response> => {
-        return await postByFetch('', {})
+    const addUser = async (
+        user: Omit<User, 'id' | 'status' | 'userRole' | 'createdDate' | 'updatedDate'>
+    ): Promise<Response> => {
+        return await postByFetch('AddUser', {
+            ...user,
+        })
     }
 
-    const updateUser = async () => {
-        return postByFetch('', {})
+    const updateUser = async (
+        id: string,
+        username: string,
+        firstName: string,
+        lastName: string,
+        email: string,
+        userRoleId: string,
+        status: string
+    ) => {
+        return postByFetch('UpdateUser', {
+            id: id,
+            username: username,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            userRoleId: userRoleId,
+            status: status,
+        })
     }
 
     const softDeleteUser = (id: string) => {
