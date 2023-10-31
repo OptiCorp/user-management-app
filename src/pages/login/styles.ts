@@ -19,7 +19,7 @@ export const ButtonWrapper = styled.div`
 `
 
 export const BackgroundContainer = styled.div`
-    background-image: url(/phoneBackground);
+    background-image: url('/phoneBackground.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -29,7 +29,7 @@ export const BackgroundContainer = styled.div`
     min-height: 100vh;
 
     @media (min-width: 1025px) {
-        background-image: url(/desktopBackground);
+        background-image: url('/desktopBackground.png');
         background-size: cover;
         background-position: center;
     }
