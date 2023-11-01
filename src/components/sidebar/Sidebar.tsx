@@ -1,7 +1,7 @@
 import { useMsal } from '@azure/msal-react'
 import { Button, Scrim, Typography } from '@equinor/eds-core-react'
 import { FunctionComponent } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { COLORS } from '../../style/GlobalStyles'
 import { LinkContainer, RouteName, StyledSheet } from './styles'
 

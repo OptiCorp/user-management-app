@@ -1,8 +1,7 @@
 import { Icon, TopBar } from '@equinor/eds-core-react'
 import { arrow_back_ios, menu } from '@equinor/eds-icons'
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate, useParams } from 'react-router'
-import apiService from '../../services/api'
+import { useLocation, useNavigate } from 'react-router'
 import { COLORS } from '../../style/GlobalStyles'
 import Sidebar from '../sidebar/Sidebar'
 import { HeaderLocation, NewTopBar } from './styles'
@@ -12,22 +11,21 @@ export const Header = () => {
     const [activeUrl, setActiveUrl] = useState<string>('')
     const location = useLocation()
     const [open, setOpen] = useState(false)
-    const api = apiService()
 
-    const [title, setTitle] = useState('')
+    /* const [title, setTitle] = useState('') */
     useEffect(() => {
         setActiveUrl(window.location.pathname)
     }, [location])
 
-    const useBasePath = () => {
+    /* const useBasePath = () => {
         const params = useParams<Record<string, string>>()
 
         return Object.values(params).reduce(
             (path, param) => path?.replace('/' + param, ''),
             location.pathname.slice(1)
         )
-    }
-    const basePath = useBasePath()
+    } */
+
     /* const { id, workflowId, taskId, punchId } = useParams() as {
         id: string
         taskId: string
@@ -97,7 +95,7 @@ export const Header = () => {
                     )}
                 </TopBar.Header>
                 <TopBar.CustomContent>
-                    <HeaderLocation>{title}</HeaderLocation>
+                    <HeaderLocation>title</HeaderLocation>
                 </TopBar.CustomContent>
                 <TopBar.Actions>
                     <Icon

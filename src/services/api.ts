@@ -51,28 +51,6 @@ const apiService = () => {
         }
     }
 
-    // Generic function for put requests
-    const putByFetch = async (url: string, bodyData: any) => {
-        try {
-            const tokenResponse = await pca.acquireTokenSilent(request)
-            const putOperations = {
-                method: 'PUT',
-                headers: {
-                    Authorization: `Bearer ${tokenResponse.accessToken}`,
-                    'Content-Type': 'application/json',
-                    'Access-Control-Allow-Origin': '*',
-                },
-                body: JSON.stringify(bodyData),
-            }
-            const res = await fetch(`${API_URL}/${url}`, putOperations)
-
-            return res
-        } catch (error) {
-            console.error('An error occurred:', error)
-            throw error
-        }
-    }
-
     // Generic function for delete requests
     const deleteByFetch = async (url: string) => {
         try {
