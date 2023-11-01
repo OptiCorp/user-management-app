@@ -3,6 +3,9 @@ import { Link, useNavigate } from 'react-router-dom'
 import { COLORS } from '../../style/GlobalStyles'
 import { edit } from '@equinor/eds-icons'
 import styled from 'styled-components'
+import { DefaultNavigation } from '../../components/navigation/DefaultNavigation'
+import apiService from '../../services/api'
+import { useEffect } from 'react'
 
 export const users = [
     {
@@ -30,54 +33,63 @@ export const users = [
 
 const Users = () => {
     const navigate = useNavigate()
+    const api = apiService()
 
     const editUser = (id: string) => {
         navigate(`EditUser/${id}`)
     }
+
+    /* useEffect(() => {
+        ;(async () => {
+            const resp = await api.getAllUsers()
+
+            console.log(resp)
+        })()
+    }, []) */
+
     return (
-        <UserListItem>
-            <TableWrapper>
-                <Table>
-                    <Table.Head>
-                        <Table.Row>
-                            <Table.Cell>Name</Table.Cell>
-                            <Table.Cell>Email</Table.Cell>
-                            <Table.Cell>
-                                <Button as={Link} to="/AddUser">
-                                    New User
-                                </Button>
-                            </Table.Cell>
-                        </Table.Row>
-                    </Table.Head>
-                    <Table.Body>
-                        {users.map((user) => (
-                            <Table.Row key={user.id} onClick={() => editUser(user.id)}>
+        <>
+            <UserListItem>
+                <TableWrapper>
+                    <Table style={{ width: '100%' }}>
+                        <Table.Head>
+                            <Table.Row>
+                                <Table.Cell>Name</Table.Cell>
+                                <Table.Cell>Email</Table.Cell>
                                 <Table.Cell>
-                                    {user.firstName} {user.lastName}
+                                    <Button as={Link} to="/AddUser">
+                                        New User
+                                    </Button>
                                 </Table.Cell>
-                                <Table.Cell>{user.email}</Table.Cell>
-                                <CustomTableCell>
-                                    <Icon size={16} color={COLORS.primary} data={edit} />
-                                </CustomTableCell>
                             </Table.Row>
-                        ))}
-                    </Table.Body>
-                </Table>
-            </TableWrapper>
-        </UserListItem>
+                        </Table.Head>
+                        <Table.Body>
+                            {users.map((user) => (
+                                <Table.Row key={user.id} onClick={() => editUser(user.id)}>
+                                    <Table.Cell>
+                                        {user.firstName} {user.lastName}
+                                    </Table.Cell>
+                                    <Table.Cell>{user.email}</Table.Cell>
+                                    <CustomTableCell>
+                                        <Icon size={16} color={COLORS.primary} data={edit} />
+                                    </CustomTableCell>
+                                </Table.Row>
+                            ))}
+                        </Table.Body>
+                    </Table>
+                </TableWrapper>
+            </UserListItem>
+            <>
+                <DefaultNavigation hideNavbar={false} />
+            </>
+        </>
     )
 }
 export default Users
 
 const UserListItem = styled.div`
-    /* margin-bottom: 80px; */
-    min-width: 375px;
     padding: 10px;
-    padding-top: 10px;
     background-color: ${COLORS.frostyGray};
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
 `
 
 const TableWrapper = styled.div`
@@ -85,7 +97,6 @@ const TableWrapper = styled.div`
     padding-bottom: 15%;
     text-overflow: ellipsis;
     overflow: hidden;
-    white-space: nowrap;
 `
 const CustomTableCell = styled(Table.Cell)`
     text-align: center;
