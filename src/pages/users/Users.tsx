@@ -4,8 +4,6 @@ import { COLORS } from '../../style/GlobalStyles'
 import { edit } from '@equinor/eds-icons'
 import styled from 'styled-components'
 import { DefaultNavigation } from '../../components/navigation/DefaultNavigation'
-import apiService from '../../services/api'
-import { useEffect } from 'react'
 
 export const users = [
     {
@@ -33,7 +31,6 @@ export const users = [
 
 const Users = () => {
     const navigate = useNavigate()
-    const api = apiService()
 
     const editUser = (id: string) => {
         navigate(`EditUser/${id}`)

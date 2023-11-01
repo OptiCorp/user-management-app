@@ -1,18 +1,13 @@
-import { Button, Dialog, Typography } from '@equinor/eds-core-react'
-import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
-import apiService from '../../../services/api'
-import { NavActionsComponent } from '../../../components/navigation/useNavActionBtn'
+import { Typography } from '@equinor/eds-core-react'
+import { useState } from 'react'
 import CustomDialog from '../../../components/modal/useModalHook'
 
 export const UserNav = () => {
-    const api = apiService()
-    const [positiveOpen, setPositiveOpen] = useState(false)
-    const [addNav, setAddNav] = useState(false)
-    const [editNav, setEditNav] = useState(false)
+    /* const [positiveOpen, setPositiveOpen] = useState(false) */
+    /* const [addNav, setAddNav] = useState(false)
+    const [editNav, setEditNav] = useState(false) */
     const [negativeOpen, setNegativeOpen] = useState(false)
-    const navigate = useNavigate()
-    const { id } = useParams() as { id: string }
+
     const [updateOpen, setUpdateOpen] = useState(false)
     const [deleteOpen, setDeleteOpen] = useState(false)
 
@@ -31,13 +26,13 @@ export const UserNav = () => {
             setAddNav(false)
         }
     }) */
-
+    /* 
     const handleOpen = () => {
         setPositiveOpen(true)
     }
     const handleOpenSecond = () => {
         setNegativeOpen(true)
-    }
+    } */
 
     const handleCloseSecond = () => {
         setNegativeOpen(false)
@@ -49,12 +44,12 @@ export const UserNav = () => {
         setPositiveOpen(false)
     } */
 
-    const handleUpdate = () => {
+    /*  const handleUpdate = () => {
         setUpdateOpen(true)
     }
     const handleDelete = () => {
         setDeleteOpen(true)
-    }
+    } */
     const handleUpdateClose = () => {
         setUpdateOpen(false)
     }
@@ -76,17 +71,17 @@ export const UserNav = () => {
 
     return (
         <>
-            <NavActionsComponent
+            {/*  <NavActionsComponent
                 onClick={handleOpenSecond}
                 buttonVariant="outlined"
                 ButtonMessage="Clear"
                 secondButtonColor="primary"
                 secondOnClick={handleOpen}
                 SecondButtonMessage="Create user"
-                isShown={addNav}
-            />
+                // isShown={addNav}
+            /> */}
 
-            <Dialog open={positiveOpen}>
+            {/* <Dialog open={positiveOpen}>
                 <Dialog.Header>
                     <Dialog.Title>Create User?</Dialog.Title>
                 </Dialog.Header>
@@ -97,13 +92,13 @@ export const UserNav = () => {
                 </Dialog.CustomContent>
                 <Dialog.Actions>
                     <div>
-                        <Button variant="ghost" /* onClick={clearAndClose} */>Cancel</Button>
+                        <Button variant="ghost"  onClick={clearAndClose} >Cancel</Button>
                         <Button type="submit" form="add-user">
                             Create User
                         </Button>
                     </div>
                 </Dialog.Actions>
-            </Dialog>
+            </Dialog> */}
             <CustomDialog
                 isOpen={negativeOpen}
                 title="Clear form?"
@@ -118,15 +113,15 @@ export const UserNav = () => {
                     Are you sure you want to clear your changes? Any unsaved data will be lost.
                 </Typography>
             </CustomDialog>
-            <NavActionsComponent
+            {/* <NavActionsComponent
                 buttonColor="danger"
                 ButtonMessage="Delete user"
                 secondButtonColor="primary"
                 onClick={handleDelete}
                 secondOnClick={handleUpdate}
-                isShown={editNav}
+                // isShown={editNav}
                 SecondButtonMessage="Update user"
-            />
+            /> */}
 
             <CustomDialog
                 isOpen={updateOpen}

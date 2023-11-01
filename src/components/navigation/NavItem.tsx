@@ -5,7 +5,7 @@ import { ImageContainerActive } from './style'
 import { COLORS } from '../../style/GlobalStyles'
 
 export const NavItem = ({
-    isActive,
+    /* isActive, */
     name,
     icon,
     to,
