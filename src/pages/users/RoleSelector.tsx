@@ -1,12 +1,8 @@
 import { Controller, useFormContext } from 'react-hook-form'
 import Select from 'react-select'
 
-import { useEffect, useState } from 'react'
-import apiService from '../../services/api'
-
 export const RoleSelector = () => {
-    const api = apiService()
-    const { control, setValue } = useFormContext()
+    const { control } = useFormContext()
 
     // const [userRoles, setUserRoles] = useState<UserRole[]>()
 
