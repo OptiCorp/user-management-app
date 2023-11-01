@@ -5,7 +5,7 @@ import { useLocation, useNavigate, useParams } from 'react-router'
 import apiService from '../../services/api'
 import { COLORS } from '../../style/GlobalStyles'
 import Sidebar from '../sidebar/Sidebar'
-import { HeaderContents, HeaderLocation, NewTopBar } from './styles'
+import { HeaderLocation, NewTopBar } from './styles'
 
 export const Header = () => {
     const navigate = useNavigate()
@@ -93,9 +93,7 @@ export const Header = () => {
             <NewTopBar>
                 <TopBar.Header>
                     {activeUrl === '/' ? null : (
-                        <HeaderContents>
-                            <Icon data={arrow_back_ios} color={COLORS.white} onClick={onClick} />
-                        </HeaderContents>
+                        <Icon data={arrow_back_ios} color={COLORS.white} onClick={onClick} />
                     )}
                 </TopBar.Header>
                 <TopBar.CustomContent>
