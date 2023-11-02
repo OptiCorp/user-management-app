@@ -1,18 +1,20 @@
 import { Chip, Switch } from '@equinor/eds-core-react'
 import { Controller, useFormContext } from 'react-hook-form'
+import { User } from '../../services/apiTypes'
+import { useEffect, useState } from 'react'
 
-export const StatusSwitch = () => {
-    const { control } = useFormContext()
-    // const [checked, setChecked] = useState(user?.status === 'Active')
+export const StatusSwitch = ({ user }: { user?: User }) => {
+    const { control, register } = useFormContext()
+    const [checked, setChecked] = useState(user?.status === 'Active')
 
-    // useEffect(() => {
-    //     setChecked(user?.status === 'Active')
-    // }, [user])
+    useEffect(() => {
+        setChecked(user?.status === 'Active')
+    }, [user])
 
     return (
         <>
             <Chip
-                // variant={user?.status ? 'active' : 'error'}
+                variant={user?.status ? 'active' : 'error'}
                 style={{ display: 'flex', width: '200px', height: '20px' }}
             >
                 <Controller
@@ -21,21 +23,20 @@ export const StatusSwitch = () => {
                     rules={{
                         required: 'Required',
                     }}
-                    // defaultValue={user?.status || 'Disabled'}
+                    defaultValue={user?.status || 'Disabled'}
                     render={({ field: { onChange, value } }) => (
                         <Switch
                             size="small"
                             type="checkbox"
                             value={value}
-                            // disabled={!hasPermission}
-                            // {...register(String(user?.status))}
+                            {...register(String(user?.status))}
                             checked={value === 'Active'}
                             onChange={(e) => {
                                 const newChecked = e.target.checked
-                                // setChecked(newChecked)
+                                setChecked(newChecked)
                                 onChange(newChecked ? 'Active' : 'Disabled')
                             }}
-                            // label={`User is ${checked ? 'Active' : 'Disabled'}`}
+                            label={`User is ${checked ? 'Active' : 'Disabled'}`}
                         />
                     )}
                 />
