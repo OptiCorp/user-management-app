@@ -3,7 +3,7 @@ import { pca } from '../msalConfig'
 import { User, UserRole } from './apiTypes'
 
 const request = {
-    scopes: ['cc0af56e-ee49-46ce-aad6-010dce5bcbb6/User.Read'],
+    scopes: ['3c926c2e-6b26-4c17-9087-5e2852f6309b/user_impersonation'],
     account: pca.getAllAccounts()[0],
 }
 
@@ -75,7 +75,7 @@ const apiService = () => {
     //USER
 
     const getAllUsers = async () => {
-        const data = await getByFetch('GetAllUsers')
+        const data = await getByFetch('GetAllUsersAdmin')
         return data
     }
 
@@ -85,10 +85,20 @@ const apiService = () => {
     }
 
     const addUser = async (
-        user: Omit<User, 'id' | 'status' | 'userRole' | 'createdDate' | 'updatedDate'>
+        username: string,
+        azureAdUserId: string,
+        firstName: string,
+        lastName: string,
+        email: string,
+        userRoleId: string
     ): Promise<Response> => {
         return await postByFetch('AddUser', {
-            ...user,
+            username: username,
+            azureAdUserId: azureAdUserId,
+            firstName: firstName,
+            lastName: lastName,
+            email: email,
+            userRoleId: userRoleId,
         })
     }
 
@@ -117,18 +127,18 @@ const apiService = () => {
     }
 
     const hardDeleteUser = (id: string) => {
-        return deleteByFetch(`HardDeleteUser?=${id}`)
+        return deleteByFetch(`HardDeleteUser?id=${id}`)
     }
 
     // USER ROLE
 
     const getAllUserRoles = async (): Promise<UserRole[]> => {
-        const data = await getByFetch('GetAllUsers')
+        const data = await getByFetch('GetAllUserRoles')
         return data
     }
 
     const getUserRole = async (id: string): Promise<UserRole> => {
-        const data = await getByFetch(`GetUser?id=${id}`)
+        const data = await getByFetch(`GetUserRole?id=${id}`)
         return data
     }
 
