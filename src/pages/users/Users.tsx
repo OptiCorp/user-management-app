@@ -1,23 +1,18 @@
-import { Button, Icon, Table } from '@equinor/eds-core-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Icon, Table } from '@equinor/eds-core-react'
+import { useNavigate } from 'react-router-dom'
 import { COLORS } from '../../style/GlobalStyles'
 import { edit } from '@equinor/eds-icons'
 import styled from 'styled-components'
 import { DefaultNavigation } from '../../components/navigation/DefaultNavigation'
 import apiService from '../../services/api'
 import { useEffect, useState } from 'react'
-import { User } from '../../services/apiTypes'
+import { ApiStatus, User } from '../../services/apiTypes'
 import { Loading } from '../../components/Loading'
-
-enum ApiStatus {
-    LOADING = 'loading',
-    SUCCESS = 'success',
-    ERROR = 'error',
-}
 
 const Users = () => {
     const navigate = useNavigate()
     const api = apiService()
+
     const [users, setUsers] = useState<User[]>()
     const [fetchUsersStatus, setFetchUsersStatus] = useState<ApiStatus>(ApiStatus.LOADING)
 
