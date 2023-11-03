@@ -37,7 +37,7 @@ export const RoleSelector = ({ user, label }: Props) => {
             rules={{
                 required: 'Required',
             }}
-            defaultValue={'Inspector'}
+            defaultValue={currentDefaultValue}
             render={({ field: { onChange, value } }) => {
                 if (!value && currentDefaultValue) {
                     setValue('userRoleId', currentDefaultValue.id)

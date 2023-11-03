@@ -1,9 +1,16 @@
-import { Chip, Switch } from '@equinor/eds-core-react'
+import { Chip, Label, Switch } from '@equinor/eds-core-react'
 import { Controller, useFormContext } from 'react-hook-form'
 import { User } from '../../services/apiTypes'
 import { useEffect, useState } from 'react'
+import styled from 'styled-components'
 
-export const StatusSwitch = ({ user }: { user?: User }) => {
+type Props = {
+    user?: User
+    /** Label text. */
+    label?: string
+}
+
+export const StatusSwitch = ({ user, label }: Props) => {
     const { control, register } = useFormContext()
     const [checked, setChecked] = useState(user?.status === 'Active')
 
@@ -12,7 +19,8 @@ export const StatusSwitch = ({ user }: { user?: User }) => {
     }, [user])
 
     return (
-        <>
+        <Container>
+            {label && <Label label={label} />}
             <Chip
                 variant={user?.status ? 'active' : 'error'}
                 style={{ display: 'flex', width: '200px', height: '20px' }}
@@ -41,6 +49,10 @@ export const StatusSwitch = ({ user }: { user?: User }) => {
                     )}
                 />
             </Chip>
-        </>
+        </Container>
     )
 }
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+`
