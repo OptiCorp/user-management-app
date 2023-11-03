@@ -85,20 +85,10 @@ const apiService = () => {
     }
 
     const addUser = async (
-        username: string,
-        azureAdUserId: string,
-        firstName: string,
-        lastName: string,
-        email: string,
-        userRoleId: string
+        user: Omit<User, 'id' | 'status' | 'userRole' | 'createdDate' | 'updatedDate'>
     ): Promise<Response> => {
         return await postByFetch('AddUser', {
-            username: username,
-            azureAdUserId: azureAdUserId,
-            firstName: firstName,
-            lastName: lastName,
-            email: email,
-            userRoleId: userRoleId,
+            ...user,
         })
     }
 
