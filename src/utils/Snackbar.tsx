@@ -1,4 +1,4 @@
-import { Snackbar, Typography } from '@equinor/eds-core-react'
+import { Snackbar } from '@equinor/eds-core-react'
 import { useContext } from 'react'
 import UmAppContext from '../contexts/UmAppContext'
 import styled from 'styled-components'
