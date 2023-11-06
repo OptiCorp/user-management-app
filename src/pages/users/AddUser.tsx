@@ -94,10 +94,10 @@ const AddUser = () => {
             <FormProvider {...methods}>
                 <Wrapper>
                     <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-                        <InputField name="username" label="Username" placeholder="username" />
-                        <InputField name="firstName" label="First name" placeholder="first name" />
-                        <InputField name="lastName" label="Last name" placeholder="last name" />
-                        <InputField name="email" label="Email" placeholder="email" type="email" />
+                        <InputField name="username" label="Username" />
+                        <InputField name="firstName" label="First name" />
+                        <InputField name="lastName" label="Last name" />
+                        <InputField name="email" label="Email" type="email" />
 
                         <RoleSelector label="User role" user={user} />
                         {addUserPath && <Button type="submit">Add User</Button>}
