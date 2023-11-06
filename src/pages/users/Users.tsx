@@ -1,4 +1,4 @@
-import { Icon, Table } from '@equinor/eds-core-react'
+import { Chip, Icon, Table } from '@equinor/eds-core-react'
 import { useNavigate } from 'react-router-dom'
 import { COLORS } from '../../style/GlobalStyles'
 import { edit } from '@equinor/eds-icons'
@@ -45,7 +45,8 @@ const Users = () => {
                         <Table.Head>
                             <Table.Row>
                                 <Table.Cell>Name</Table.Cell>
-                                <Table.Cell>Email</Table.Cell>
+                                <Table.Cell>Role</Table.Cell>
+                                <Table.Cell>Status</Table.Cell>
                                 <Table.Cell></Table.Cell>
                             </Table.Row>
                         </Table.Head>
@@ -56,7 +57,15 @@ const Users = () => {
                                         <Table.Cell>
                                             {user.firstName} {user.lastName}
                                         </Table.Cell>
-                                        <Table.Cell>{user.email}</Table.Cell>
+                                        <Table.Cell>{user.userRole.name}</Table.Cell>
+                                        <Table.Cell>
+                                            {user.status === 'Active' && (
+                                                <Chip variant="active">{user.status}</Chip>
+                                            )}
+                                            {user.status === 'Deleted' && (
+                                                <Chip variant="error">{user.status}</Chip>
+                                            )}
+                                        </Table.Cell>
                                         <CustomTableCell>
                                             <Icon size={16} color={COLORS.primary} data={edit} />
                                         </CustomTableCell>
