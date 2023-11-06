@@ -1,83 +1,154 @@
-import { FormProvider, useForm } from 'react-hook-form'
+import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import { InputField } from './InputField'
-import { useLocation, useParams } from 'react-router'
-import { users } from './Users'
-import { useEffect } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router'
+import { useContext, useEffect, useState } from 'react'
 import apiService from '../../services/api'
-import { NavActionsComponent } from '../../components/navigation/useNavActionBtn'
 import { RoleSelector } from './RoleSelector'
 import { StatusSwitch } from './StatusSwitch'
+import { ApiStatus, User } from '../../services/apiTypes'
+import { Button, Dialog, Typography } from '@equinor/eds-core-react'
+import { DefaultNavigation } from '../../components/navigation/DefaultNavigation'
+import { Loading } from '../../components/Loading'
+import UmAppContext from '../../contexts/UmAppContext'
+
+type FormValues = {
+    firstName: string
+    lastName: string
+    userRoleId: string
+    email: string
+    username: string
+    status: string
+}
 
 const AddUser = () => {
     const api = apiService()
-    const methods = useForm()
+    const navigate = useNavigate()
+
+    const methods = useForm<FormValues>()
     const { handleSubmit } = methods
     const { reset } = methods
     const { id } = useParams() as { id: string }
     const appLocation = useLocation()
+    const { openSnackbar } = useContext(UmAppContext)
+
+    const [user, setUser] = useState<User>()
+    const [fetchUserStatus, setFetchUserStatus] = useState<ApiStatus>(ApiStatus.LOADING)
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
+
     const path = appLocation.pathname.split('/')
-    const user = users.find((user) => user.id === id)
+    const addUserPath = path.includes('AddUser')
+
+    useEffect(() => {
+        if (!id) return
+        ;(async () => {
+            const userFromApi = await api.getUser(id)
+            setUser(userFromApi)
+            setFetchUserStatus(ApiStatus.SUCCESS)
+        })()
+    }, [id])
 
     useEffect(() => {
         if (!user) return
         reset(user)
     }, [user])
 
-    const submitNewUser = () => {
-        /* console.log({
-            azureAdUserId: methods.getValues('email'),
-            firstName: methods.getValues('firstName'),
-            lastName: methods.getValues('lastName'),
-            username: methods.getValues('username'),
-            email: methods.getValues('email'),
-        }) */
-        /* api.addUser({
-            azureAdUserId: methods.getValues('email'),
-            firstName: methods.getValues('firstName'),
-            lastName: methods.getValues('lastName'),
-            username: methods.getValues('username'),
-            email: methods.getValues('email'),
-        }) */
+    const deleteUser = (id: string) => {
+        api.hardDeleteUser(id)
+        openSnackbar('User deleted')
+        navigate('/')
     }
-    const updateUser = () => {
-        console.log('user updated')
-        console.log(methods.getValues('email'))
-        api.updateUser(
-            id,
-            methods.getValues('username'),
-            methods.getValues('firstName'),
-            methods.getValues('lastName'),
-            methods.getValues('email'),
-            'user role id here',
-            'status here'
-        )
+
+    const onSubmit: SubmitHandler<FormValues> = async (data) => {
+        if (appLocation.pathname === '/AddUser') {
+            const res = await api.addUser({
+                ...data,
+                azureAdUserId: data.email,
+            })
+
+            reset()
+            if (res.ok && openSnackbar) openSnackbar('User added')
+
+            navigate('/', { state: { newUser: data.email } })
+        } else {
+            const res = await api.updateUser(
+                id,
+                data.username,
+                data.firstName,
+                data.lastName,
+                data.email,
+                data.userRoleId,
+                data.status
+            )
+            if (res.ok && openSnackbar) openSnackbar('User updated')
+            navigate(`/EditUser/${id}`, { state: { newUser: data.email } })
+        }
+    }
+
+    if (!addUserPath && fetchUserStatus === ApiStatus.LOADING) {
+        return <Loading text="Loading user .." />
     }
 
     return (
-        <FormProvider {...methods}>
-            <Wrapper>
-                <FormWrapper onSubmit={handleSubmit(submitNewUser)}>
-                    <InputField name="username" label="Username" placeholder="username" />
-                    <InputField name="firstName" label="First name" placeholder="first name" />
-                    <InputField name="lastName" label="Last name" placeholder="last name" />
-                    <InputField name="email" label="Email" placeholder="email" type="email" />
-                    {/* {path.includes('AddUser') && <Button type="submit">Add User</Button>}
-                    {!path.includes('AddUser') && <Button type="submit">Update User</Button>} */}
-                    <RoleSelector />
-                    <StatusSwitch />
-                </FormWrapper>
-            </Wrapper>
-            <NavActionsComponent
-                onClick={() => console.log('test')}
-                buttonVariant="outlined"
-                ButtonMessage="Clear"
-                secondButtonColor="primary"
-                secondOnClick={path.includes('AddUser') ? submitNewUser : updateUser}
-                SecondButtonMessage={path.includes('AddUser') ? 'Create User' : 'Update User'}
-                isShown={true}
-            />
-        </FormProvider>
+        <>
+            <FormProvider {...methods}>
+                <Wrapper>
+                    <FormWrapper onSubmit={handleSubmit(onSubmit)}>
+                        <InputField name="username" label="Username" placeholder="username" />
+                        <InputField name="firstName" label="First name" placeholder="first name" />
+                        <InputField name="lastName" label="Last name" placeholder="last name" />
+                        <InputField name="email" label="Email" placeholder="email" type="email" />
+
+                        <RoleSelector label="User role" user={user} />
+                        {addUserPath && <Button type="submit">Add User</Button>}
+                        {!addUserPath && (
+                            <Container>
+                                <StatusSwitch user={user} label="User status" />
+                                <ButtonContainer>
+                                    <Button type="submit">Update User</Button>
+                                    <Button
+                                        color="danger"
+                                        onClick={() => setIsDeleteDialogOpen(true)}
+                                    >
+                                        Delete user
+                                    </Button>
+                                </ButtonContainer>
+                            </Container>
+                        )}
+                    </FormWrapper>
+                </Wrapper>
+                <>
+                    <DefaultNavigation hideNavbar={false} />
+                </>
+            </FormProvider>
+            <Dialog open={isDeleteDialogOpen} isDismissable /* onClose={handleStatusClose} */>
+                <Dialog.Header>
+                    <Dialog.Title>Delete user?</Dialog.Title>
+                </Dialog.Header>
+                <Dialog.CustomContent>
+                    <Typography variant="body_short">
+                        Are you sure you want to delete the user
+                        <Typography as="span" bold variant="body_short">
+                            {' '}
+                            {user?.firstName} {user?.lastName},{' '}
+                        </Typography>
+                        this permanently deletes the user.
+                    </Typography>
+                </Dialog.CustomContent>
+                <Dialog.Actions>
+                    <Button
+                        onClick={() => setIsDeleteDialogOpen(false)}
+                        variant="ghost"
+                        color="secondary"
+                    >
+                        Cancel
+                    </Button>
+                    <Button color="danger" onClick={() => deleteUser(id)}>
+                        Delete
+                    </Button>
+                </Dialog.Actions>
+            </Dialog>
+        </>
     )
 }
 
@@ -86,12 +157,6 @@ export default AddUser
 export const Wrapper = styled.div`
     margin: 2rem auto;
     width: 80%;
-    max-width: 600px;
-    height: 600px;
-    display: grid;
-    align-items: center;
-    grid-template-rows: repeat(5, 1fr);
-    grid-template-columns: 1fr;
 `
 
 const FormWrapper = styled.form`
@@ -100,5 +165,15 @@ const FormWrapper = styled.form`
     min-width: 300px;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 20px;
+`
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+`
+
+const ButtonContainer = styled.div`
+    display: flex;
+    gap: 20px;
 `

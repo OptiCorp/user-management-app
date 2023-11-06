@@ -1,3 +1,9 @@
+export enum ApiStatus {
+    LOADING = 'loading',
+    SUCCESS = 'success',
+    ERROR = 'error',
+}
+
 export type User = {
     id: string
     azureAdUserId: string

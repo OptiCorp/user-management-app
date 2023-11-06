@@ -80,12 +80,8 @@ export const NavigationMainWrap = styled.div`
     color: ${COLORS.white};
 `
 export const StyledList = styled(Tabs.List)`
-    width: 100vw;
-    height: 100%;
     display: flex;
 `
-
-export const StyledTabs = styled(Tabs)``
 
 export const StyledChip = styled(Chip)`
     margin-left: 0.2rem;

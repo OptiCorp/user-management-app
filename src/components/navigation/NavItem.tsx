@@ -10,8 +10,8 @@ export const NavItem = ({
     icon,
     to,
 }: {
-    isActive: boolean
-    name: string
+    isActive?: boolean
+    name?: string
     icon: IconData
     to: string
 }) => {

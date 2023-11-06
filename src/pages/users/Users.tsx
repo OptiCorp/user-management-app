@@ -1,48 +1,41 @@
-import { Button, Icon, Table } from '@equinor/eds-core-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Icon, Table } from '@equinor/eds-core-react'
+import { useNavigate } from 'react-router-dom'
 import { COLORS } from '../../style/GlobalStyles'
 import { edit } from '@equinor/eds-icons'
 import styled from 'styled-components'
 import { DefaultNavigation } from '../../components/navigation/DefaultNavigation'
-
-export const users = [
-    {
-        id: '1',
-        username: 'ola.norman',
-        firstName: 'Ola',
-        lastName: 'Norman',
-        email: 'ola.norman@test.no',
-    },
-    {
-        id: '2',
-        username: 'kari.norman',
-        firstName: 'Kari',
-        lastName: 'Norman',
-        email: 'kari.norman@test.no',
-    },
-    {
-        id: '3',
-        username: 'kai.norman',
-        firstName: 'Kai',
-        lastName: 'Norman',
-        email: 'kai.norman@test.no',
-    },
-]
+import apiService from '../../services/api'
+import { useEffect, useState } from 'react'
+import { ApiStatus, User } from '../../services/apiTypes'
+import { Loading } from '../../components/Loading'
 
 const Users = () => {
     const navigate = useNavigate()
+    const api = apiService()
+
+    const [users, setUsers] = useState<User[]>()
+    const [fetchUsersStatus, setFetchUsersStatus] = useState<ApiStatus>(ApiStatus.LOADING)
 
     const editUser = (id: string) => {
         navigate(`EditUser/${id}`)
     }
 
-    /* useEffect(() => {
+    useEffect(() => {
         ;(async () => {
-            const resp = await api.getAllUsers()
-
-            console.log(resp)
+            const usersFromApi = await api.getAllUsers()
+            setUsers(usersFromApi)
+            setFetchUsersStatus(ApiStatus.SUCCESS)
         })()
-    }, []) */
+    }, [])
+
+    if (fetchUsersStatus === ApiStatus.LOADING) {
+        return <Loading text="Loading users .." />
+    }
+
+    // TODO: Make an error component?
+    if (fetchUsersStatus === ApiStatus.ERROR) {
+        return <>Error</>
+    }
 
     return (
         <>
@@ -53,25 +46,22 @@ const Users = () => {
                             <Table.Row>
                                 <Table.Cell>Name</Table.Cell>
                                 <Table.Cell>Email</Table.Cell>
-                                <Table.Cell>
-                                    <Button as={Link} to="/AddUser">
-                                        New User
-                                    </Button>
-                                </Table.Cell>
+                                <Table.Cell></Table.Cell>
                             </Table.Row>
                         </Table.Head>
                         <Table.Body>
-                            {users.map((user) => (
-                                <Table.Row key={user.id} onClick={() => editUser(user.id)}>
-                                    <Table.Cell>
-                                        {user.firstName} {user.lastName}
-                                    </Table.Cell>
-                                    <Table.Cell>{user.email}</Table.Cell>
-                                    <CustomTableCell>
-                                        <Icon size={16} color={COLORS.primary} data={edit} />
-                                    </CustomTableCell>
-                                </Table.Row>
-                            ))}
+                            {users &&
+                                users.map((user) => (
+                                    <Table.Row key={user.id} onClick={() => editUser(user.id)}>
+                                        <Table.Cell>
+                                            {user.firstName} {user.lastName}
+                                        </Table.Cell>
+                                        <Table.Cell>{user.email}</Table.Cell>
+                                        <CustomTableCell>
+                                            <Icon size={16} color={COLORS.primary} data={edit} />
+                                        </CustomTableCell>
+                                    </Table.Row>
+                                ))}
                         </Table.Body>
                     </Table>
                 </TableWrapper>

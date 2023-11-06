@@ -9,7 +9,7 @@ export const msalConfig = {
         cacheLocation: 'sessionStorage', // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.
         storeAuthStateInCookie: false, // Set this to "true" if you are having issues on IE11 or Edge
     },
-    scopes: ['api://3c926c2e-6b26-4c17-9087-5e2852f6309b/Users.Read'],
+    scopes: ['api://3c926c2e-6b26-4c17-9087-5e2852f6309b/user_impersonation'],
     system: {
         loggerOptions: {
             loggerCallback: (level: any, message: any, containsPii: any) => {

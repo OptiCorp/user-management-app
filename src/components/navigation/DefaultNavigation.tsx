@@ -1,54 +1,29 @@
-import { credit_card, info_circle } from '@equinor/eds-icons'
-import { useState } from 'react'
-import { useLocation } from 'react-router-dom'
-
+import { group, person_add } from '@equinor/eds-icons'
 import { NavItem } from './NavItem'
-import { FooterContainer, StyledList, StyledTab, StyledTabs } from './style'
+import { FooterContainer, StyledList, StyledTab } from './style'
+import { useLocation } from 'react-router'
 
 export const DefaultNavigation: React.FC<{
     hideNavbar: boolean
 }> = ({ hideNavbar }) => {
-    const path = useLocation()
-    const [activeTab, setActiveTab] = useState<number | undefined>(
-        path.pathname.includes('Punches') || path.pathname.includes('punch')
-            ? 0
-            : path.pathname.includes('Checklists') ||
-              path.pathname.includes('MyChecklists') ||
-              path.pathname.includes('ForReviewChecklists')
-            ? 1
-            : path.pathname.includes('Invoice')
-            ? 2
-            : 1
-    )
-
-    const handleChange = (index: number) => {
-        setActiveTab(index)
-    }
+    const appLocation = useLocation()
+    const path = appLocation.pathname.split('/')
+    const addUserPath = path.includes('AddUser')
+    const editUserPath = path.includes('EditUser')
 
     return (
         <FooterContainer>
             {!hideNavbar && (
-                <StyledTabs activeTab={activeTab} onChange={handleChange} variant="fullWidth">
-                    <StyledList>
-                        <StyledTab>
-                            <NavItem
-                                icon={info_circle}
-                                name="Punches"
-                                isActive={activeTab === 0}
-                                to="/Punches"
-                            />
-                        </StyledTab>
+                <StyledList>
+                    <StyledTab>
+                        {!addUserPath && !editUserPath && (
+                            <NavItem icon={person_add} to="/AddUser" />
+                        )}
+                    </StyledTab>
 
-                        <StyledTab>
-                            <NavItem
-                                icon={credit_card}
-                                name="Invoices"
-                                isActive={activeTab === 2}
-                                to="/Invoice"
-                            />
-                        </StyledTab>
-                    </StyledList>
-                </StyledTabs>
+                    <StyledTab>{addUserPath && <NavItem icon={group} to="/" />}</StyledTab>
+                    <StyledTab>{editUserPath && <NavItem icon={group} to="/" />}</StyledTab>
+                </StyledList>
             )}
         </FooterContainer>
     )
