@@ -33,7 +33,6 @@ export const Header = () => {
         }
         if (hasPath(path)) {
             const newPath = path.pop()
-            console.log(newPath === id)
             if (newPath === id) {
                 api.getUser(id).then((userData: User) => {
                     if (userData) {
