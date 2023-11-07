@@ -5,7 +5,6 @@ import GlobalStyles from './style/GlobalStyles.ts'
 import { BrowserRouter } from 'react-router-dom'
 import { MsalProvider } from '@azure/msal-react'
 import { pca } from './msalConfig.ts'
-import { UmAppContextProvider } from './contexts/UmAppContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
