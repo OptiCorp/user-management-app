@@ -1,19 +1,21 @@
-import { Icon, TopBar } from '@equinor/eds-core-react'
-import { arrow_back_ios, menu } from '@equinor/eds-icons'
+import { Icon, Menu, TopBar } from '@equinor/eds-core-react'
+import { account_circle, arrow_back_ios, log_out } from '@equinor/eds-icons'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router'
 import { COLORS } from '../../style/GlobalStyles'
-import Sidebar from '../sidebar/Sidebar'
 import { HeaderLocation, NewTopBar } from './styles'
 import { User } from '../../services/apiTypes'
 import apiService from '../../services/api'
+import ProfilePicture from '../ProfileImage'
 
 export const Header = () => {
     const api = apiService()
     const navigate = useNavigate()
     const { id } = useParams() as { id: string }
     const appLocation = useLocation()
-    const [open, setOpen] = useState(false)
+
+    const [isOpen, setIsOpen] = useState(false)
+    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
     const [activeUrl, setActiveUrl] = useState<string>('')
     const [title, setTitle] = useState<string | undefined>()
 
@@ -24,6 +26,10 @@ export const Header = () => {
             if (paths[i] === '') return false
         }
         return true
+    }
+
+    const openMenu = () => {
+        setIsOpen((prev) => !prev)
     }
 
     useEffect(() => {
@@ -52,7 +58,6 @@ export const Header = () => {
 
     return (
         <>
-            <Sidebar open={open} setOpen={setOpen} />
             <NewTopBar>
                 <TopBar.Header>
                     {activeUrl === '/' ? null : (
@@ -62,16 +67,18 @@ export const Header = () => {
                 <TopBar.CustomContent>
                     <HeaderLocation>{title}</HeaderLocation>
                 </TopBar.CustomContent>
-                <TopBar.Actions>
-                    <Icon
-                        data={menu}
-                        size={40}
-                        style={{
-                            color: COLORS.white,
-                        }}
-                        onClick={() => setOpen(!open)}
-                    />
-                </TopBar.Actions>
+
+                <Menu open={isOpen} anchorEl={anchorEl} onClose={() => setIsOpen(false)}>
+                    <Menu.Item onClick={() => navigate('/AddUser')}>
+                        <Icon data={account_circle} />
+                        Profile
+                    </Menu.Item>
+                    <Menu.Item onClick={() => navigate('/')}>
+                        <Icon data={log_out} />
+                        Sign out
+                    </Menu.Item>
+                </Menu>
+                <ProfilePicture ref={setAnchorEl} onClick={openMenu} />
             </NewTopBar>
         </>
     )
