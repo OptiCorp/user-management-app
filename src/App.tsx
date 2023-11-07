@@ -6,6 +6,7 @@ import { Login } from './pages/login'
 import Layout from './Layout'
 import SnackbarComponent from './utils/Snackbar'
 import { UmAppContextProvider } from './contexts/UmAppContext'
+import Profile from './pages/Profile'
 
 function App() {
     const isAuthenticated = useIsAuthenticated()
@@ -19,6 +20,7 @@ function App() {
                         <Route element={<Layout />}>
                             <Route path="/" element={<Users />} />
                             <Route path="/AddUser" element={<AddUser />} />
+                            <Route path="/Profile" element={<Profile />} />
                             <Route path="/EditUser/:id" element={<AddUser />} />
                         </Route>
                     </Routes>

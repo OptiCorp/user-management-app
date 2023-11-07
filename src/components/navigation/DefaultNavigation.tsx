@@ -10,17 +10,19 @@ export const DefaultNavigation: React.FC<{
     const path = appLocation.pathname.split('/')
     const addUserPath = path.includes('AddUser')
     const editUserPath = path.includes('EditUser')
+    const profilePath = path.includes('Profile')
 
     return (
         <FooterContainer>
             {!hideNavbar && (
                 <StyledList>
                     <StyledTab>
-                        {!addUserPath && !editUserPath && (
+                        {!addUserPath && !editUserPath && !profilePath && (
                             <NavItem icon={person_add} to="/AddUser" />
                         )}
                     </StyledTab>
 
+                    <StyledTab>{profilePath && <NavItem icon={group} to="/" />}</StyledTab>
                     <StyledTab>{addUserPath && <NavItem icon={group} to="/" />}</StyledTab>
                     <StyledTab>{editUserPath && <NavItem icon={group} to="/" />}</StyledTab>
                 </StyledList>
