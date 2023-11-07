@@ -1,20 +1,14 @@
-import { Button, Progress, Typography } from '@equinor/eds-core-react'
-import {
-    BackgroundContainer,
-    ButtonWrapper,
-    Header,
-    InfoText,
-    LoginContainer,
-    TitleHeader,
-} from './styles'
+import { Button, Progress } from '@equinor/eds-core-react'
+import { BackgroundContainer, ButtonWrapper, Header, LoginContainer, TitleHeader } from './styles'
 import { useMsal } from '@azure/msal-react'
 import { useState } from 'react'
 
 export const Login = () => {
     const { instance } = useMsal()
+
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
 
-    const onSubmit = () => {
+    const onSubmit = async () => {
         setIsSubmitting(true)
         instance.loginPopup()
     }
@@ -23,9 +17,6 @@ export const Login = () => {
             <LoginContainer>
                 <Header>
                     <TitleHeader>Sign in to your Account</TitleHeader>
-                    <Typography color="white" link href="#">
-                        Or get access here
-                    </Typography>
                 </Header>
                 <ButtonWrapper>
                     <Button
@@ -37,12 +28,6 @@ export const Login = () => {
                         {isSubmitting ? <Progress.Dots color={'primary'} /> : 'Log in'}
                     </Button>
                 </ButtonWrapper>
-                <InfoText>
-                    Having Trouble with your account?
-                    <Typography color="white" link href="#">
-                        Contact Support
-                    </Typography>
-                </InfoText>
             </LoginContainer>
         </BackgroundContainer>
     )
