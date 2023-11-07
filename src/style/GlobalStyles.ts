@@ -1,5 +1,7 @@
 import { createGlobalStyle } from 'styled-components'
 
+export const TEXT_SHADOW = '2px 1px 1px rgba(0, 0, 0, 0.5)'
+
 export const COLORS = {
     white: '#FFF',
     black: '#000',
