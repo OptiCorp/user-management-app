@@ -7,8 +7,10 @@ import { HeaderLocation, NewTopBar } from './styles'
 import { User } from '../../services/apiTypes'
 import apiService from '../../services/api'
 import ProfilePicture from '../ProfileImage'
+import { useMsal } from '@azure/msal-react'
 
 export const Header = () => {
+    const { instance } = useMsal()
     const api = apiService()
     const navigate = useNavigate()
     const { id } = useParams() as { id: string }
@@ -30,6 +32,11 @@ export const Header = () => {
 
     const openMenu = () => {
         setIsOpen((prev) => !prev)
+    }
+
+    const handleSignOut = () => {
+        navigate('/')
+        instance.logoutPopup()
     }
 
     useEffect(() => {
@@ -73,7 +80,7 @@ export const Header = () => {
                         <Icon data={account_circle} />
                         Profile
                     </Menu.Item>
-                    <Menu.Item onClick={() => navigate('/')}>
+                    <Menu.Item onClick={handleSignOut}>
                         <Icon data={log_out} />
                         Sign out
                     </Menu.Item>
