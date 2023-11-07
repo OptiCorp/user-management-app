@@ -1,39 +1,41 @@
 {
-  "name": "user-management-app",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "@azure/msal-browser": "^2.37.0",
-    "@azure/msal-react": "^1.5.7",
-    "@equinor/eds-core-react": "^0.33.1",
-    "@equinor/eds-icons": "^0.19.3",
-    "prettier": "^3.0.3",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-hook-form": "^7.47.0",
-    "react-router": "^6.17.0",
-    "react-router-dom": "^6.17.0",
-    "react-select": "^5.7.7",
-    "styled-components": "^6.1.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20.8.10",
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "@vitejs/plugin-react": "^4.0.3",
-    "eslint": "^8.45.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react-refresh": "^0.4.3",
-    "typescript": "^5.0.2",
-    "vite": "^4.4.5"
-  }
+    "name": "user-management-app",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+        "preview": "vite preview"
+    },
+    "dependencies": {
+        "@azure/msal-browser": "^2.37.0",
+        "@azure/msal-react": "^1.5.7",
+        "@equinor/eds-core-react": "^0.33.1",
+        "@equinor/eds-icons": "^0.19.3",
+        "@microsoft/microsoft-graph-client": "^3.0.7",
+        "jwt-decode": "^3.1.2",
+        "prettier": "^3.0.3",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-hook-form": "^7.47.0",
+        "react-router": "^6.17.0",
+        "react-router-dom": "^6.17.0",
+        "react-select": "^5.7.7",
+        "styled-components": "^6.1.0"
+    },
+    "devDependencies": {
+        "@types/node": "^20.8.10",
+        "@types/react": "^18.2.15",
+        "@types/react-dom": "^18.2.7",
+        "@typescript-eslint/eslint-plugin": "^6.0.0",
+        "@typescript-eslint/parser": "^6.0.0",
+        "@vitejs/plugin-react": "^4.0.3",
+        "eslint": "^8.45.0",
+        "eslint-plugin-react-hooks": "^4.6.0",
+        "eslint-plugin-react-refresh": "^0.4.3",
+        "typescript": "^5.0.2",
+        "vite": "^4.4.5"
+    }
 }
