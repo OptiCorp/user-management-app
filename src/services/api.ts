@@ -7,8 +7,38 @@ const request = {
     account: pca.getAllAccounts()[0],
 }
 
+const microsoftGraphRequest = {
+    scopes: ['https://graph.microsoft.com/.default'],
+}
+const microsoftGraphUrl = 'https://graph.microsoft.com'
+
 const apiService = () => {
     // Generic function for get requests
+
+    // Microsoft Graph
+    const getMsGraphImageByFetch = async (url: string): Promise<any> => {
+        return pca.acquireTokenSilent(microsoftGraphRequest).then(async (tokenResponse) => {
+            const getOperation = {
+                method: 'GET',
+                headers: {
+                    Authorization: `Bearer ${tokenResponse.accessToken}`,
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                },
+            }
+            const res = await fetch(`${microsoftGraphUrl}/${url}`, getOperation)
+            if (res.ok) {
+                const blob = await res.blob()
+                const url = window.URL || window.webkitURL
+                const blobUrl = url.createObjectURL(blob)
+                return blobUrl
+            } else {
+                console.error('Get by fetch failed. Url=' + url, res)
+            }
+        })
+    }
+
+    // User Management
     const getByFetch = async (url: string): Promise<any> => {
         return pca.acquireTokenSilent(request).then(async (tokenResponse) => {
             const getOperation = {
@@ -72,6 +102,13 @@ const apiService = () => {
         }
     }
 
+    // Microsoft Graph
+
+    const getUserImage = async () => {
+        const data = await getMsGraphImageByFetch('v1.0/me/photo/$value')
+        return data
+    }
+
     //USER
 
     const getAllUsers = async () => {
@@ -81,6 +118,11 @@ const apiService = () => {
 
     const getUser = async (id: string) => {
         const data = await getByFetch(`GetUser?id=${id}`)
+        return data
+    }
+
+    const getUserByAzureAdUserId = async (id: string) => {
+        const data = await getByFetch(`GetUserByAzureAdUserId?azureAdUserId=${id}`)
         return data
     }
 
@@ -151,6 +193,7 @@ const apiService = () => {
     return {
         getAllUsers,
         getUser,
+        getUserByAzureAdUserId,
         addUser,
         updateUser,
         softDeleteUser,
@@ -160,6 +203,7 @@ const apiService = () => {
         addUserRole,
         updateUserRole,
         deleteUserRole,
+        getUserImage,
     }
 }
 
