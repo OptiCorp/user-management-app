@@ -81,7 +81,6 @@ const AddUser = () => {
                 data.status
             )
             if (res.ok && openSnackbar) openSnackbar('User updated')
-            navigate(`/EditUser/${id}`, { state: { newUser: data.email } })
         }
     }
 
