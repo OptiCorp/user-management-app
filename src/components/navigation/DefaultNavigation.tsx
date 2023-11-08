@@ -12,7 +12,6 @@ export const DefaultNavigation: React.FC<{}> = () => {
 
     return (
         <FooterContainer>
-            (
             <StyledList>
                 <StyledTab>
                     {!addUserPath && !editUserPath && !profilePath && (
@@ -24,7 +23,6 @@ export const DefaultNavigation: React.FC<{}> = () => {
                 <StyledTab>{addUserPath && <NavItem icon={group} to="/" />}</StyledTab>
                 <StyledTab>{editUserPath && <NavItem icon={group} to="/" />}</StyledTab>
             </StyledList>
-            )
         </FooterContainer>
     )
 }
