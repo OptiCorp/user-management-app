@@ -1,4 +1,4 @@
-import { Chip, Tabs } from '@equinor/eds-core-react'
+import { Chip } from '@equinor/eds-core-react'
 import styled from 'styled-components'
 import { COLORS } from '../../style/GlobalStyles'
 
@@ -79,7 +79,7 @@ export const NavigationMainWrap = styled.div`
     text-decoration: none;
     color: ${COLORS.white};
 `
-export const StyledList = styled(Tabs.List)`
+export const StyledList = styled.div`
     display: flex;
 `
 

@@ -143,7 +143,6 @@ export function UmAppContextProvider({ children }: { children: React.ReactNode }
         } else {
             console.error('No account is available')
         }
-        console.log('Context access token: ', accessToken)
     }, [account, inProgress, instance])
 
     if (status === ApiStatus.LOADING) {
