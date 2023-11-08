@@ -120,7 +120,11 @@ const AddUser = () => {
                     <DefaultNavigation />
                 </>
             </FormProvider>
-            <Dialog open={isDeleteDialogOpen} isDismissable /* onClose={handleStatusClose} */>
+            <Dialog
+                open={isDeleteDialogOpen}
+                isDismissable
+                onClose={() => setIsDeleteDialogOpen(false)}
+            >
                 <Dialog.Header>
                     <Dialog.Title>Delete user?</Dialog.Title>
                 </Dialog.Header>
