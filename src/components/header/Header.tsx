@@ -6,7 +6,7 @@ import { COLORS } from '../../style/GlobalStyles'
 import { HeaderLocation, NewTopBar } from './styles'
 import { User } from '../../services/apiTypes'
 import apiService from '../../services/api'
-import ProfilePicture from '../ProfileImage'
+import ProfilePicture from '../ProfileAvatar'
 import { useMsal } from '@azure/msal-react'
 
 export const Header = () => {
@@ -76,7 +76,7 @@ export const Header = () => {
                 </TopBar.CustomContent>
 
                 <Menu open={isOpen} anchorEl={anchorEl} onClose={() => setIsOpen(false)}>
-                    <Menu.Item onClick={() => navigate('/AddUser')}>
+                    <Menu.Item onClick={() => navigate('/Profile')}>
                         <Icon data={account_circle} />
                         Profile
                     </Menu.Item>

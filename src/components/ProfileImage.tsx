@@ -1,10 +1,8 @@
-import { useEffect, useState, forwardRef } from 'react'
-import styled from 'styled-components'
-import { Avatar, Button, Icon } from '@equinor/eds-core-react'
+import { useEffect, useState } from 'react'
 import apiService from '../services/api'
-import { person } from '@equinor/eds-icons'
+import styled from 'styled-components'
 
-const ProfilePicture = forwardRef<HTMLButtonElement, { onClick: () => void }>((props, ref) => {
+const ProfileImage = () => {
     const api = apiService()
 
     const [imageUrl, setImageUrl] = useState<string | null>(null)
@@ -19,29 +17,13 @@ const ProfilePicture = forwardRef<HTMLButtonElement, { onClick: () => void }>((p
         getPhoto()
     }, [])
 
-    return (
-        <>
-            {imageUrl && (
-                <AvatarButton ref={ref} onClick={props.onClick}>
-                    <Avatar size={40} src={imageUrl} alt="profile picture" />
-                </AvatarButton>
-            )}
-            {!imageUrl && (
-                <AvatarButton ref={ref} onClick={props.onClick}>
-                    <Icon data={person} />
-                </AvatarButton>
-            )}
-        </>
-    )
-})
+    return <>{imageUrl && <Image src={imageUrl} />}</>
+}
 
-const AvatarButton = styled(Button)`
-    background: none;
-    border: none;
-    outline: none;
-    &:hover {
-        background: none;
-    }
+const Image = styled.img`
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
 `
 
-export default ProfilePicture
+export default ProfileImage
