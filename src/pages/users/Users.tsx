@@ -52,25 +52,36 @@ const Users = () => {
                         </Table.Head>
                         <Table.Body>
                             {users &&
-                                users.map((user) => (
-                                    <Table.Row key={user.id} onClick={() => editUser(user.id)}>
-                                        <Table.Cell>
-                                            {user.firstName} {user.lastName}
-                                        </Table.Cell>
-                                        <Table.Cell>{user.userRole.name}</Table.Cell>
-                                        <Table.Cell>
-                                            {user.status === 'Active' && (
-                                                <Chip variant="active">{user.status}</Chip>
-                                            )}
-                                            {user.status === 'Deleted' && (
-                                                <Chip variant="error">{user.status}</Chip>
-                                            )}
-                                        </Table.Cell>
-                                        <CustomTableCell>
-                                            <Icon size={16} color={COLORS.primary} data={edit} />
-                                        </CustomTableCell>
-                                    </Table.Row>
-                                ))}
+                                users.map((user) => {
+                                    return (
+                                        <Table.Row key={user.id} onClick={() => editUser(user.id)}>
+                                            <Table.Cell>
+                                                {user.firstName} {user.lastName}
+                                            </Table.Cell>
+                                            <Table.Cell>{user.userRole.name}</Table.Cell>
+                                            <Table.Cell>
+                                                {user.status === 'Active' && (
+                                                    <Chip variant="active">{user.status}</Chip>
+                                                )}
+                                                {(user.status === 'Deleted' ||
+                                                    user.status === 'Disabled') && (
+                                                    <Chip variant="error">
+                                                        {user.status === 'Deleted' || user.status
+                                                            ? 'Inactive'
+                                                            : ''}
+                                                    </Chip>
+                                                )}
+                                            </Table.Cell>
+                                            <CustomTableCell>
+                                                <Icon
+                                                    size={16}
+                                                    color={COLORS.primary}
+                                                    data={edit}
+                                                />
+                                            </CustomTableCell>
+                                        </Table.Row>
+                                    )
+                                })}
                         </Table.Body>
                     </Table>
                 </TableWrapper>
