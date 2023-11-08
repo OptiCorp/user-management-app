@@ -118,7 +118,7 @@ const AddUser = () => {
                     </FormWrapper>
                 </Wrapper>
                 <>
-                    <DefaultNavigation hideNavbar={false} />
+                    <DefaultNavigation />
                 </>
             </FormProvider>
             <Dialog open={isDeleteDialogOpen} isDismissable /* onClose={handleStatusClose} */>

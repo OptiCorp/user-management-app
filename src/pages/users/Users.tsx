@@ -76,7 +76,7 @@ const Users = () => {
                 </TableWrapper>
             </UserListItem>
             <>
-                <DefaultNavigation hideNavbar={false} />
+                <DefaultNavigation />
             </>
         </>
     )

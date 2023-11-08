@@ -21,7 +21,7 @@ const Profile = () => {
                 <Button onClick={user.signOut}>Sign Out</Button>
             </Container>
             <>
-                <DefaultNavigation hideNavbar={false} />
+                <DefaultNavigation />
             </>
         </>
     )
