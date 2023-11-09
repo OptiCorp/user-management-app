@@ -1,4 +1,4 @@
-import { Chip, Icon, Table } from '@equinor/eds-core-react'
+import { Button, Chip, Icon, Table } from '@equinor/eds-core-react'
 import { useNavigate } from 'react-router-dom'
 import { COLORS } from '../../style/GlobalStyles'
 import { edit } from '@equinor/eds-icons'
@@ -36,13 +36,23 @@ const Users = () => {
     if (fetchUsersStatus === ApiStatus.ERROR) {
         return <>Error</>
     }
+    users?.sort((a, b) => {
+        if (a.firstName.toLowerCase() < b.firstName.toLowerCase()) {
+            return -1
+        }
+        if (a.firstName.toLowerCase() > b.firstName.toLowerCase()) {
+            return 1
+        } else {
+            return 0
+        }
+    })
 
     return (
         <>
             <UserListItem>
                 <TableWrapper>
-                    <Table style={{ width: '100%' }}>
-                        <Table.Head>
+                    <CustomTable>
+                        <Table.Head sticky>
                             <Table.Row>
                                 <Table.Cell>Name</Table.Cell>
                                 <Table.Cell>Role</Table.Cell>
@@ -63,13 +73,11 @@ const Users = () => {
                                                 {user.status === 'Active' && (
                                                     <Chip variant="active">{user.status}</Chip>
                                                 )}
-                                                {(user.status === 'Deleted' ||
-                                                    user.status === 'Disabled') && (
-                                                    <Chip variant="error">
-                                                        {user.status === 'Deleted' || user.status
-                                                            ? 'Inactive'
-                                                            : ''}
-                                                    </Chip>
+                                                {user.status === 'Disabled' && (
+                                                    <Chip variant="default">Inactive</Chip>
+                                                )}
+                                                {user.status === 'Deleted' && (
+                                                    <Chip variant="error">{user.status}</Chip>
                                                 )}
                                             </Table.Cell>
                                             <CustomTableCell>
@@ -83,8 +91,9 @@ const Users = () => {
                                     )
                                 })}
                         </Table.Body>
-                    </Table>
+                    </CustomTable>
                 </TableWrapper>
+                <CustomButton onClick={() => navigate('/AddUser')}>Add User</CustomButton>
             </UserListItem>
             <>
                 <DefaultNavigation />
@@ -94,17 +103,26 @@ const Users = () => {
 }
 export default Users
 
+const CustomTable = styled(Table)`
+    width: 100%;
+`
+
 const UserListItem = styled.div`
     padding: 10px;
-    background-color: ${COLORS.frostyGray};
+    /* background-color: ${COLORS.frostyGray}; */
 `
 
 const TableWrapper = styled.div`
+    margin-bottom: 10px;
     width: 100%;
-    padding-bottom: 15%;
+    max-height: 82%;
     text-overflow: ellipsis;
     overflow: hidden;
+    overflow-y: auto;
 `
 const CustomTableCell = styled(Table.Cell)`
     text-align: center;
+`
+const CustomButton = styled(Button)`
+    width: 100%;
 `

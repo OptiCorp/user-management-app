@@ -21,8 +21,8 @@ export const StatusSwitch = ({ user, label }: Props) => {
     return (
         <Container>
             {label && <Label label={label} />}
-            <Chip
-                variant={user?.status ? 'active' : 'error'}
+            <SwitchChip
+                variant={checked ? 'active' : 'error'}
                 style={{ display: 'flex', width: '200px', height: '20px' }}
             >
                 <Controller
@@ -44,15 +44,21 @@ export const StatusSwitch = ({ user, label }: Props) => {
                                 setChecked(newChecked)
                                 onChange(newChecked ? 'Active' : 'Disabled')
                             }}
-                            label={`User is ${checked ? 'Active' : 'Disabled'}`}
+                            label={` ${checked ? 'Deactivate user' : 'Activate user'}`}
                         />
                     )}
                 />
-            </Chip>
+            </SwitchChip>
         </Container>
     )
 }
 const Container = styled.div`
     display: flex;
     flex-direction: column;
+`
+
+const SwitchChip = styled(Chip)`
+    display: flex;
+    width: 200px;
+    height: 20px;
 `
