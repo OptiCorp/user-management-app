@@ -4,13 +4,22 @@ import React, { FunctionComponent } from 'react'
 import { Controller, useFormContext } from 'react-hook-form'
 
 interface InputFieldProps {
+    /** Name */
     name: string
+    /** Label text */
     label: React.HTMLInputTypeAttribute
     placeholder?: string
     type?: React.HTMLInputTypeAttribute
+    /** Validation */
+    validation?: Record<string, any>
 }
 
-export const InputField: FunctionComponent<InputFieldProps> = ({ name, label, placeholder }) => {
+export const InputField: FunctionComponent<InputFieldProps> = ({
+    name,
+    label,
+    placeholder,
+    validation = {},
+}) => {
     const { control, register } = useFormContext()
 
     return (
@@ -18,9 +27,7 @@ export const InputField: FunctionComponent<InputFieldProps> = ({ name, label, pl
             defaultValue=""
             name={name}
             control={control}
-            rules={{
-                required: 'Required',
-            }}
+            rules={validation[name]}
             render={({ field: { ref, ...props }, fieldState: { error } }) => (
                 <TextField
                     {...props}
