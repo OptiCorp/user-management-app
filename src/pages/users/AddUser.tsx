@@ -11,6 +11,8 @@ import { Button, Dialog, Typography } from '@equinor/eds-core-react'
 import { DefaultNavigation } from '../../components/navigation/DefaultNavigation'
 import { Loading } from '../../components/Loading'
 import UmAppContext from '../../contexts/UmAppContext'
+import { validation } from './validation'
+import { COLORS } from '../../style/GlobalStyles'
 
 type FormValues = {
     firstName: string
@@ -54,7 +56,7 @@ const AddUser = () => {
     }, [user])
 
     const deleteUser = (id: string) => {
-        api.hardDeleteUser(id)
+        api.softDeleteUser(id)
         openSnackbar('User deleted')
         navigate('/')
     }
@@ -93,21 +95,47 @@ const AddUser = () => {
             <FormProvider {...methods}>
                 <Wrapper>
                     <FormWrapper onSubmit={handleSubmit(onSubmit)}>
-                        <InputField name="username" label="Username" />
-                        <InputField name="firstName" label="First name" />
-                        <InputField name="lastName" label="Last name" />
-                        <InputField name="email" label="Email" type="email" />
+                        <InputField name="username" label="Username" validation={validation} />
 
-                        <RoleSelector label="User role" user={user} />
-                        {addUserPath && <Button type="submit">Add User</Button>}
+                        <InputField name="firstName" label="First name" validation={validation} />
+                        <InputField name="lastName" label="Last name" validation={validation} />
+                        <InputField
+                            name="email"
+                            label="Email"
+                            type="email"
+                            validation={validation}
+                        />
+                        <div>
+                            <RoleSelector
+                                name="userRoleId"
+                                label="User role"
+                                user={user}
+                                validation={validation}
+                            />
+
+                            {methods.formState.errors.userRoleId && (
+                                <RoleSelectorValidation>
+                                    {methods.formState.errors.userRoleId.message}
+                                </RoleSelectorValidation>
+                            )}
+                        </div>
+                        {addUserPath && (
+                            <Button disabled={!methods.formState.isDirty} type="submit">
+                                Add User
+                            </Button>
+                        )}
                         {!addUserPath && (
                             <Container>
                                 <StatusSwitch user={user} label="User status" />
                                 <ButtonContainer>
-                                    <Button type="submit">Update User</Button>
+                                    <Button disabled={!methods.formState.isDirty} type="submit">
+                                        Update User
+                                    </Button>
                                     <Button
                                         color="danger"
+                                        variant="outlined"
                                         onClick={() => setIsDeleteDialogOpen(true)}
+                                        disabled={user?.status === 'Deleted'}
                                     >
                                         Delete user
                                     </Button>
@@ -133,9 +161,8 @@ const AddUser = () => {
                         Are you sure you want to delete the user
                         <Typography as="span" bold variant="body_short">
                             {' '}
-                            {user?.firstName} {user?.lastName},{' '}
+                            {user?.firstName} {user?.lastName}
                         </Typography>
-                        this permanently deletes the user.
                     </Typography>
                 </Dialog.CustomContent>
                 <Dialog.Actions>
@@ -168,7 +195,7 @@ const FormWrapper = styled.form`
     min-width: 300px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px;
 `
 const Container = styled.div`
     display: flex;
@@ -179,4 +206,11 @@ const Container = styled.div`
 const ButtonContainer = styled.div`
     display: flex;
     gap: 20px;
+`
+
+const RoleSelectorValidation = styled.p`
+    margin: 0;
+    padding: 5px 0 0 10px;
+    color: ${COLORS.crimson};
+    font-weight: 500;
 `

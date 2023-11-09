@@ -1,10 +1,10 @@
 import { User } from '../services/apiTypes'
 
 const CheckRole = ({ currentUser }: { currentUser: User | null }) => {
-    const isInspector = () => currentUser?.userRole.name === 'Inspector' || false
+    const isAdmin = () => currentUser?.userRole.name === 'Admin' || false
 
     return {
-        isInspector,
+        isAdmin,
     }
 }
 

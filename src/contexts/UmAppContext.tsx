@@ -149,7 +149,7 @@ export function UmAppContextProvider({ children }: { children: React.ReactNode }
         return <Loading text="Loading .." />
     }
 
-    if (role.isInspector()) {
+    if (!role.isAdmin()) {
         return <NoAccessPage />
     }
 
