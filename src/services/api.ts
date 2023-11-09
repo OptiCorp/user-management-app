@@ -155,7 +155,7 @@ const apiService = () => {
     }
 
     const softDeleteUser = (id: string) => {
-        return deleteByFetch(`SoftDeleteUser?=${id}`)
+        return deleteByFetch(`SoftDeleteUser?id=${id}`)
     }
 
     const hardDeleteUser = (id: string) => {

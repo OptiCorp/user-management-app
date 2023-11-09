@@ -70,7 +70,6 @@ export const StyledTab = styled.div`
 `
 
 export const NavigationMainWrap = styled.div`
-    margin: 1rem 0;
     display: flex;
     flex-direction: column;
     align-items: center;

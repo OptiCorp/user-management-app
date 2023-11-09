@@ -8,11 +8,15 @@ import styled from 'styled-components'
 
 type Props = {
     user?: User
-    /** Label text. */
+    /** Label text */
     label?: string
+    /** Name */
+    name: string
+    /** Validation */
+    validation: Record<string, any>
 }
 
-export const RoleSelector = ({ user, label }: Props) => {
+export const RoleSelector = ({ user, label, name, validation }: Props) => {
     const api = apiService()
     const { control, setValue } = useFormContext()
     const [userRoles, setUserRoles] = useState<UserRole[]>()
@@ -33,10 +37,8 @@ export const RoleSelector = ({ user, label }: Props) => {
     return (
         <Controller
             control={control}
-            name="userRoleId"
-            rules={{
-                required: 'Required',
-            }}
+            name={name}
+            rules={validation[name]}
             defaultValue={currentDefaultValue}
             render={({ field: { onChange, value } }) => {
                 if (!value && currentDefaultValue) {
