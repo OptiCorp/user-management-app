@@ -135,7 +135,10 @@ const Users = () => {
                 </Dialog.CustomContent>
                 <Dialog.Actions>
                     <Button
-                        onClick={() => setIsSearchModalOpen(false)}
+                        onClick={() => {
+                            setIsSearchModalOpen(false)
+                            setSearchText('')
+                        }}
                         variant="ghost"
                         color="secondary"
                     >
