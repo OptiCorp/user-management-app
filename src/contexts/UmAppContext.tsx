@@ -51,32 +51,6 @@ export function UmAppContextProvider({ children }: { children: React.ReactNode }
         setIsSnackbarOpen(false)
     }
 
-    async function createUser(userEmail: string, name: string) {
-        const nameSplit = name.split(' ')
-        const firstName = nameSplit[0]
-        const lastName = nameSplit[nameSplit.length - 1]
-        const username = `${firstName.toLowerCase()}.${lastName.toLowerCase()}`
-        try {
-            const createUserResponse = await api.addUser({
-                azureAdUserId: userEmail,
-                firstName: firstName,
-                lastName: lastName,
-                username: username,
-                email: userEmail,
-            })
-            console.log('User creation response status:', createUserResponse.status)
-            if (createUserResponse.status === 200) {
-                await createUserResponse.json()
-            } else {
-                console.log('Error creating user:', createUserResponse.statusText)
-                return null
-            }
-        } catch (error) {
-            console.log('Error creating user:', error)
-            return null
-        }
-    }
-
     function getUserInfoFromIdToken(token: string): {
         preferredUserName: string
         name: string
@@ -88,18 +62,12 @@ export function UmAppContextProvider({ children }: { children: React.ReactNode }
             name: decodedToken.name || '',
         }
     }
-    async function fetchUserByEmail(userEmail: string, name: string) {
+    async function fetchUserByEmail(userEmail: string) {
         const response = await api.getUserByAzureAdUserId(userEmail)
         if (response) {
             const user = response
 
             setCurrentUser(user)
-        } else if (!response) {
-            const newUser = await createUser(userEmail, name)
-
-            if (newUser) {
-                setCurrentUser(newUser)
-            }
         } else {
             console.error('Error fetching user by email')
         }
@@ -109,7 +77,7 @@ export function UmAppContextProvider({ children }: { children: React.ReactNode }
         setStatus(ApiStatus.LOADING)
         try {
             const userInfo = getUserInfoFromIdToken(token)
-            await fetchUserByEmail(userInfo.preferredUserName, userInfo.name)
+            await fetchUserByEmail(userInfo.preferredUserName)
             setStatus(ApiStatus.SUCCESS)
         } catch (error) {
             console.error('Error fetching and updating user:', error)
