@@ -7,7 +7,7 @@ import apiService from '../../services/api'
 import { RoleSelector } from './RoleSelector'
 import { StatusSwitch } from './StatusSwitch'
 import { ApiStatus, User } from '../../services/apiTypes'
-import { Button, Dialog, Typography } from '@equinor/eds-core-react'
+import { Button, Dialog, Progress, Typography } from '@equinor/eds-core-react'
 import { DefaultNavigation } from '../../components/navigation/DefaultNavigation'
 import { Loading } from '../../components/Loading'
 import UmAppContext from '../../contexts/UmAppContext'
@@ -36,6 +36,7 @@ const AddUser = () => {
 
     const [user, setUser] = useState<User>()
     const [fetchUserStatus, setFetchUserStatus] = useState<ApiStatus>(ApiStatus.LOADING)
+    const [fetchStatus, setFetchStatus] = useState<ApiStatus>(ApiStatus.SUCCESS)
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
 
     const path = appLocation.pathname.split('/')
@@ -62,17 +63,18 @@ const AddUser = () => {
     }
 
     const onSubmit: SubmitHandler<FormValues> = async (data) => {
+        setFetchStatus(ApiStatus.LOADING)
         if (appLocation.pathname === '/AddUser') {
             const res = await api.addUser({
                 ...data,
                 azureAdUserId: data.email,
             })
-
+            setFetchStatus(ApiStatus.SUCCESS)
             reset()
-            if (res.ok && openSnackbar) openSnackbar('User added')
-
             navigate('/', { state: { newUser: data.email } })
+            if (res.ok && openSnackbar) openSnackbar('User added')
         } else {
+            setFetchStatus(ApiStatus.LOADING)
             const res = await api.updateUser(
                 id,
                 data.username,
@@ -81,8 +83,9 @@ const AddUser = () => {
                 data.email,
                 data.userRoleId,
                 data.status
-            )
-            if (res.ok && openSnackbar) openSnackbar('User updated')
+                )
+                setFetchStatus(ApiStatus.SUCCESS)
+                if (res.ok && openSnackbar) openSnackbar('User updated')
         }
     }
 
@@ -120,16 +123,34 @@ const AddUser = () => {
                             )}
                         </div>
                         {addUserPath && (
-                            <Button disabled={!methods.formState.isDirty} type="submit">
-                                Add User
+                            <Button
+                                disabled={
+                                    !methods.formState.isDirty ||
+                                    fetchStatus === ApiStatus.LOADING
+                                }
+                                type="submit"
+                            >
+                                {fetchStatus === ApiStatus.SUCCESS && 'Add User'}
+                                {fetchStatus === ApiStatus.LOADING && (
+                                    <Progress.Dots color={'neutral'} />
+                                )}
                             </Button>
                         )}
                         {!addUserPath && (
                             <Container>
                                 <StatusSwitch user={user} label="User status" />
                                 <ButtonContainer>
-                                    <Button disabled={!methods.formState.isDirty} type="submit">
-                                        Update User
+                                    <Button
+                                        disabled={
+                                            !methods.formState.isDirty ||
+                                            fetchStatus === ApiStatus.LOADING
+                                        }
+                                        type="submit"
+                                    >
+                                        {fetchStatus === ApiStatus.SUCCESS && 'Update User'}
+                                        {fetchStatus === ApiStatus.LOADING && (
+                                            <Progress.Dots color={'neutral'} />
+                                        )}
                                     </Button>
                                     <Button
                                         color="danger"
