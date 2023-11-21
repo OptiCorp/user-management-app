@@ -7,6 +7,7 @@ import Layout from './Layout'
 import SnackbarComponent from './utils/Snackbar'
 import { UmAppContextProvider } from './contexts/UmAppContext'
 import Profile from './pages/Profile'
+import PageNotFound from './pages/PageNotFound'
 
 function App() {
     const isAuthenticated = useIsAuthenticated()
@@ -22,6 +23,8 @@ function App() {
                             <Route path="/AddUser" element={<AddUser />} />
                             <Route path="/Profile" element={<Profile />} />
                             <Route path="/EditUser/:id" element={<AddUser />} />
+
+                            <Route path="/*" element={<PageNotFound />} />
                         </Route>
                     </Routes>
                 </UmAppContextProvider>
