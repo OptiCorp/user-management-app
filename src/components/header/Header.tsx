@@ -54,7 +54,7 @@ export const Header = () => {
                 })
             } else {
                 const newTitle = newPath?.match(/[A-Z][a-z]+/g)?.join(' ')
-                setTitle(newTitle)
+                setTitle(newTitle || '404')
             }
         }
     }, [location, path, id])
